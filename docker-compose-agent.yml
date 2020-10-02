@@ -1,7 +1,8 @@
 version: '3.5'
 services:
  zabbix-agent:
-  image: zabbix/zabbix-agent:alpine-5.0-latest
+  image: zabbix/zabbix-agent2:latest
+  container_name: zabbix-agent
   ports:
    - "10050:10050"
   volumes:
@@ -11,12 +12,11 @@ services:
    - ./zbx_env/var/lib/zabbix/modules:/var/lib/zabbix/modules:ro
    - ./zbx_env/var/lib/zabbix/enc:/var/lib/zabbix/enc:ro
    - ./zbx_env/var/lib/zabbix/ssh_keys:/var/lib/zabbix/ssh_keys:ro
-  links:
-   - zabbix-server:zabbix-server
   environment:
    - ZBX_HOSTNAME=Ubuntu2
    - ZBX_SERVER_HOST=192.168.1.21
   privileged: true
+  restart: always
   pid: "host"
   networks:
    zbx_net_backend:
@@ -29,7 +29,7 @@ services:
    com.zabbix.description: "Zabbix agent"
    com.zabbix.company: "Zabbix LLC"
    com.zabbix.component: "zabbix-agentd"
-   com.zabbix.os: "alpine"
+   com.zabbix.os: "Docker"
 
 networks:
   zbx_net_backend:
